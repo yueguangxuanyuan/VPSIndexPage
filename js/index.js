@@ -84,7 +84,7 @@
 		},
 		//循环播放
 		jumpCircle:function(){
-			if(!this.userTakeControl){
+			if(!this.$userTakeControl){
 				var self = this;
 				var index = this.$index + this.$direction;
 				if(index < 0){
