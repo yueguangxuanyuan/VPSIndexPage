@@ -14,6 +14,8 @@
 		$el_router : 'undefined',
 		$size : -1 ,
 		$index : -1,
+		$userTakeControl:false,
+		$direction:1,
 		//实现dot激活状态修改
 		changeDotStatus:function (index){
 			var dot_list = this.$el_router.children('span');
@@ -76,12 +78,32 @@
 		jumpNext:function(){
 			this.imageSwitch(this.$index+1);
 		},
-		
 		//后退
 		jumpPrev:function(){
 			this.imageSwitch(this.$index-1);
 		},
-		
+		//循环播放
+		jumpCircle:function(){
+			if(!this.userTakeControl){
+				var self = this;
+				var index = this.$index + this.$direction;
+				if(index < 0){
+					index = 0;
+					this.$direction = 1;
+				}
+				if(index >= this.$size){
+					index = this.$size -1;
+					this.$direction = -1;
+				}
+				this.jump(index);
+				
+				setTimeout(
+					function(){
+						self.jumpCircle();
+					},2000
+				);
+			}
+		},
 		_init:function(){
 			var self = this;
 			var li_list =  this.$el.children('li');
@@ -112,6 +134,7 @@
 					var span_list = this.$el_router.children('span');
 					for(var i = 0 ; i < span_list.length ;i++){
 						$(span_list[i]).on('click',function(event){
+							self.$userTakeControl = true;
 							self.jump($(this).index());
 						});						
 					}
@@ -124,6 +147,7 @@
 					//this.$el_back =$(this.$el_back);
 					this.$el_back.on(
 						'click',function(event){
+							self.$userTakeControl = true;
 							self.jumpPrev();
 						}
 					);
@@ -133,11 +157,18 @@
 				if(this.$el_front.length > 0){
 					this.$el_front.on(
 						'click',function(event){
+							self.$userTakeControl = true;
 							self.jumpNext();
 						}
 					);
 					//this.$el_front = $(this.$el_front);
 				}
+				
+				setTimeout(
+					function(){
+						self.jumpCircle();
+					},2000
+				);
 				
 				this.imageSwitch(0);
 			}
