@@ -88,11 +88,11 @@
 				var self = this;
 				var index = this.$index + this.$direction;
 				if(index < 0){
-					index = 0;
+					index = 1;
 					this.$direction = 1;
 				}
 				if(index >= this.$size){
-					index = this.$size -1;
+					index = this.$size -2;
 					this.$direction = -1;
 				}
 				this.jump(index);
@@ -100,7 +100,7 @@
 				setTimeout(
 					function(){
 						self.jumpCircle();
-					},2000
+					},5000
 				);
 			}
 		},
@@ -167,7 +167,7 @@
 				setTimeout(
 					function(){
 						self.jumpCircle();
-					},2000
+					},4000
 				);
 				
 				this.imageSwitch(0);
